@@ -15,7 +15,7 @@ const NotifyBoard = () => {
   // Compose State
   const [showCompose, setShowCompose] = useState(false);
   const [newContent, setNewContent] = useState('');
-  const [recipientScope, setRecipientScope] = useState('all');
+  const [recipientScope, setRecipientScope] = useState('rnd');
   const [isUrgent, setIsUrgent] = useState(false);
   const [sending, setSending] = useState(false);
 
@@ -49,10 +49,10 @@ const NotifyBoard = () => {
 
   const ScopeLabel = {
       all: 'Company Wide',
-      hanoi: 'Hanoi Branch',
-      hcm: 'HCM Branch',
-      hungyen: 'Hung Yen Branch',
-      CEOFS: 'CEO Direct'
+      rnd: 'R&D Department',
+      mms: 'MMS Department',
+      'sale-online': 'Sale Online Department',
+      logistics: 'Logistics Department'
   };
 
   return (
@@ -101,13 +101,12 @@ const NotifyBoard = () => {
                 <select 
                   value={recipientScope} 
                   onChange={e => setRecipientScope(e.target.value)}
-                  style={{ width: '100%', padding: '12px', borderRadius: '12px', border: '1px solid var(--border-light)', outline: 'none', background: 'white' }}
+                  style={{ width: '100%', padding: '12px', borderRadius: '12px', border: '1px solid var(--border-light)', outline: 'none', background: 'white', fontWeight: '700', color: 'var(--text-primary)' }}
                 >
-                  <option value="all">Entire Company (Global)</option>
-                  {currentUser.allowedLocations.map(loc => (
-                    <option key={loc} value={loc}>{loc.toUpperCase()} Region</option>
-                  ))}
-                  {currentUser.id !== 'CEOFS' && <option value="CEOFS">CEO (Direct)</option>}
+                  <option value="rnd">R&D</option>
+                  <option value="mms">MMS</option>
+                  <option value="sale-online">Sale Online</option>
+                  <option value="logistics">Logistics</option>
                 </select>
               </div>
 

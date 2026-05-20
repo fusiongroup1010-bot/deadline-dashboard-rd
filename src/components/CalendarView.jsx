@@ -133,9 +133,10 @@ const CalendarView = () => {
                 });
                 const isSunday = i % 7 === 6;
                 const cellBg = isCurrMonth ? 'var(--bg-main)' : 'var(--bg-panel)';
+                const hasDoneEvent = dayEvents.some(e => e.status === 'done');
                 
                 return (
-                  <div key={i} onClick={() => { if(canEdit) openAddModal(); }} style={{ background: cellBg, padding: '6px', borderRight: '1px solid var(--border-light)', display: 'flex', flexDirection: 'column', opacity: isCurrMonth ? 1 : 0.6, cursor: 'pointer', transition: 'background 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-panel)'} onMouseLeave={(e) => e.currentTarget.style.background = cellBg}>
+                  <div key={i} onClick={() => { if(canEdit) openAddModal(); }} style={{ position: 'relative', background: cellBg, padding: '6px', borderRight: '1px solid var(--border-light)', display: 'flex', flexDirection: 'column', opacity: isCurrMonth ? 1 : 0.6, cursor: 'pointer', transition: 'background 0.2s', minHeight: '100px' }} onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-panel)'} onMouseLeave={(e) => e.currentTarget.style.background = cellBg}>
                     <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '6px' }}>
                       <span style={{ 
                         width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', 
@@ -147,12 +148,11 @@ const CalendarView = () => {
                         {format(d, 'd')}
                       </span>
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: 1, overflowY: 'auto' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: 1, overflowY: 'auto', paddingBottom: hasDoneEvent ? '20px' : '0px' }}>
                       {dayEvents.map(e => {
                         const isMeeting = e.type === 'meeting';
                         const cat = CATEGORY_MAP[e.categoryId] || Object.values(CATEGORY_MAP)[0];
                         const isFocused = focusedTaskId === e.id;
-                          const isDone = e.status === 'done';
                           return (
                            <div id={`event-${e.id}`} key={e.id} onClick={(ev) => { ev.stopPropagation(); toggleFocus(e.id); openEditModal(e); }} style={{ 
                              background: cat.accent,
@@ -182,8 +182,8 @@ const CalendarView = () => {
                                const todayStr = new Date().toISOString().split('T')[0];
                                
                                if (e.status === 'done') {
-                                 badgeText = 'Done';
-                                 badgeBg = '#7c3aed';
+                                 // Suppressed Done badge inside meeting block
+                                 return null;
                                } else if (e.status === 'in-progress') {
                                  badgeText = 'In progress';
                                  badgeBg = '#2563eb';
@@ -215,6 +215,25 @@ const CalendarView = () => {
                          );
                       })}
                     </div>
+                    {hasDoneEvent && (
+                       <div style={{
+                         position: 'absolute',
+                         bottom: '4px',
+                         right: '4px',
+                         backgroundColor: '#7c3aed',
+                         color: '#ffffff',
+                         fontSize: '9px',
+                         fontWeight: '800',
+                         padding: '2px 6px',
+                         borderRadius: '4px',
+                         textTransform: 'uppercase',
+                         boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                         pointerEvents: 'none',
+                         zIndex: 5
+                       }}>
+                         DONE
+                       </div>
+                     )}
                   </div>
                 );
               })}

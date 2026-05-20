@@ -142,64 +142,79 @@ const EventCard = ({ event, topPos, height, leftPos, width, onEdit, onDelete, on
         {fmt(event.start)} – {fmt(event.start + event.duration)}
       </div>
 
-      {/* Bottom info (Right-aligned) */}
-      <div style={{ 
-        position: 'absolute', 
-        bottom: '6px', 
-        right: '8px', 
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'flex-end', 
-        gap: '2px', 
+      {/* Bottom Info Row (Left: Creator, Right: Status & Days) */}
+      <div style={{
+        position: 'absolute',
+        bottom: '6px',
+        left: '8px',
+        right: '8px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-end',
+        gap: '4px',
         zIndex: 2,
-        pointerEvents: 'none' 
+        pointerEvents: 'none'
       }}>
-        {event.spanDays > 1 && (
-          <div style={{ fontSize: '9px', fontWeight: '800', opacity: 0.8, textTransform: 'none' }}>
-            Multiple days: {event.spanDays} days
-          </div>
-        )}
-        
-        {event.updatedBy && (
-          <div style={{ fontSize: '9px', fontWeight: '800', opacity: 0.9, whiteSpace: 'nowrap' }}>
+        {event.updatedBy ? (
+          <div style={{ 
+            fontSize: '9px', 
+            fontWeight: '800', 
+            opacity: 0.9, 
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+            overflow: 'hidden'
+          }}>
             By <strong>{event.updatedBy}</strong>
           </div>
-        )}
+        ) : <div />}
 
-        {(() => {
-          let text = '';
-          let bgColor = '';
-          const todayStr = new Date().toISOString().split('T')[0];
-          
-          if (event.status === 'done') {
-            text = 'Done';
-            bgColor = '#7c3aed';
-          } else if (event.status === 'in-progress') {
-            text = 'In progress';
-            bgColor = '#2563eb';
-          } else if (event.status === 'todo' && event.dueDate && event.dueDate < todayStr) {
-            text = 'Overdue';
-            bgColor = '#ef4444';
-          }
-  
-          if (!text) return null;
-  
-          return (
-            <div style={{
-              backgroundColor: bgColor,
-              color: '#ffffff',
-              fontSize: '9px',
-              fontWeight: '800',
-              padding: '1px 6px',
-              borderRadius: '4px',
-              whiteSpace: 'nowrap',
-              boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-              marginTop: '2px'
-            }}>
-              {text}
+        <div style={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'flex-end', 
+          gap: '2px' 
+        }}>
+          {event.spanDays > 1 && (
+            <div style={{ fontSize: '9px', fontWeight: '800', opacity: 0.8, textTransform: 'none' }}>
+              Multiple days: {event.spanDays} days
             </div>
-          );
-        })()}
+          )}
+
+          {(() => {
+            let text = '';
+            let bgColor = '';
+            const todayStr = new Date().toISOString().split('T')[0];
+            
+            if (event.status === 'done') {
+              text = 'Done';
+              bgColor = '#7c3aed';
+            } else if (event.status === 'in-progress') {
+              text = 'In progress';
+              bgColor = '#2563eb';
+            } else if (event.status === 'todo' && event.dueDate && event.dueDate < todayStr) {
+              text = 'Overdue';
+              bgColor = '#ef4444';
+            }
+    
+            if (!text) return null;
+    
+            return (
+              <div style={{
+                backgroundColor: bgColor,
+                color: '#ffffff',
+                fontSize: '9px',
+                fontWeight: '800',
+                padding: '1px 6px',
+                borderRadius: '4px',
+                whiteSpace: 'nowrap',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                marginTop: '2px'
+              }}>
+                {text}
+              </div>
+            );
+          })()}
+        </div>
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ export const DEPARTMENTS = {
     { id: 'rnd', name: 'R&D', color: '#22c55e', text: '#ffffff', accent: '#22c55e' },
     { id: 'mms', name: 'MMS', color: '#3b82f6', text: '#ffffff', accent: '#3b82f6' },
     { id: 'sale-online', name: 'Sale Online', color: '#eab308', text: '#ffffff', accent: '#eab308' },
+    { id: 'design', name: 'Design', color: '#ec4899', text: '#ffffff', accent: '#ec4899' },
   ]
 };
 
