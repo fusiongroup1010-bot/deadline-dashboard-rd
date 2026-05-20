@@ -306,11 +306,15 @@ const TaskBoard = () => {
 
           <div style={{ marginTop: '8px' }}>
             <style>{`
-              .rdp { --rdp-cell-size: 24px; --rdp-accent-color: var(--blue-accent); margin: 0; }
+              .rdp { --rdp-cell-size: 30px; --rdp-accent-color: var(--blue-accent); margin: 0; width: 100%; max-width: 100%; }
+              .rdp-months { width: 100%; }
+              .rdp-month { width: 100%; }
+              .rdp-table { width: 100%; table-layout: fixed; }
               .rdp-day_selected, .rdp-day_selected:focus-visible, .rdp-day_selected:hover { background-color: var(--blue-accent); color: white; }
-              .rdp-caption_label { font-size: 14px; font-weight: 800; color: var(--text-primary); }
-              .rdp-head_cell { color: var(--text-secondary); font-size: 10px; font-weight: 700; text-transform: uppercase; }
-              .rdp-day { font-size: 11px; font-weight: 600; color: var(--text-primary); border-radius: 6px; }
+              .rdp-caption_label { font-size: 13px; font-weight: 800; color: var(--text-primary); }
+              .rdp-head_cell { color: var(--text-secondary); font-size: 9px; font-weight: 700; text-transform: uppercase; padding: 0; }
+              .rdp-day { font-size: 11px; font-weight: 600; color: var(--text-primary); border-radius: 6px; width: 100%; height: var(--rdp-cell-size); }
+              .rdp-cell { width: 100%; padding: 1px; }
               .rdp-nav_button { color: var(--text-secondary); }
             `}</style>
             <DayPicker mode="single" selected={selectedDate} onSelect={d => d && setSelectedDate(d)} showOutsideDays weekStartsOn={1} />
