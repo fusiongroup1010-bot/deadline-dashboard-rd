@@ -3,6 +3,13 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const AuthContext = createContext();
 
 export const EMPLOYEES = [
+  // Department-based logins with default pass FS1234
+  { id: 'rnd', name: 'R&D Department', role: 'admin', pass: 'FS1234', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi', 'hcm', 'hungyen'], canSendNotify: true, notifyScope: 'all', title: 'R&D' },
+  { id: 'design', name: 'Design Department', role: 'admin', pass: 'FS1234', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi', 'hcm', 'hungyen'], canSendNotify: true, notifyScope: 'all', title: 'Design' },
+  { id: 'mms', name: 'MMS Department', role: 'admin', pass: 'FS1234', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi', 'hcm', 'hungyen'], canSendNotify: true, notifyScope: 'all', title: 'MMS' },
+  { id: 'sale-online', name: 'Sale Online Department', role: 'admin', pass: 'FS1234', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi', 'hcm', 'hungyen'], canSendNotify: true, notifyScope: 'all', title: 'Sale Online' },
+  { id: 'logistics', name: 'Logistics Department', role: 'admin', pass: 'FS1234', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi', 'hcm', 'hungyen'], canSendNotify: true, notifyScope: 'all', title: 'Logistics' },
+
   // CEO - Access & Edit All
   { id: 'CEOFS', name: 'CEO', role: 'admin', pass: 'CEOChoFS', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi', 'hcm', 'hungyen'], canSendNotify: true, notifyScope: 'all', title: 'CEO' },
    { id: 'TrangSamFS', name: 'Trang Sam', role: 'admin', pass: 'fusion2026', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi', 'hcm', 'hungyen'], canSendNotify: true, notifyScope: 'all', title: 'CEO' },
@@ -74,9 +81,9 @@ export function AuthProvider({ children }) {
     setLoading(false);
   }, []);
 
-  function login(userId, password = '') {
+  function login(userId, password = '', customName = '') {
     // Restriction: Only authorized IDs are allowed
-    const authorized = ['trangsamfs', 'lelienfs', 'thanhtrafs', 'tranhfs', 'nganhfs', 'tnhanfs', 'nanhfs', 'tnganfs', 'phlinhfs'];
+    const authorized = ['trangsamfs', 'lelienfs', 'thanhtrafs', 'tranhfs', 'nganhfs', 'tnhanfs', 'nanhfs', 'tnganfs', 'phlinhfs', 'rnd', 'design', 'mms', 'sale-online', 'logistics'];
     if (!authorized.includes(userId.toLowerCase())) {
       return Promise.reject(new Error('Access Denied. Only authorized staff are authorized to access this software at this time.'));
     }
@@ -96,7 +103,7 @@ export function AuthProvider({ children }) {
       
       const sessionUser = { 
         ...user, 
-        name: savedName || user.name,
+        name: customName || savedName || user.name,
         department: savedDept || user.title,
         address: savedAddr || user.allowedLocations[0],
         avatar: savedAvatar || null
@@ -104,6 +111,9 @@ export function AuthProvider({ children }) {
       
       setCurrentUser(sessionUser);
       localStorage.setItem('mockUser_sonl', JSON.stringify(sessionUser));
+      if (customName) {
+        localStorage.setItem(`name_${user.id}`, customName);
+      }
       return Promise.resolve(sessionUser);
       }
     }

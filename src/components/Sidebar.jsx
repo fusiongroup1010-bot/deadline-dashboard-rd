@@ -14,9 +14,9 @@ const Sidebar = ({ isOpen, onClose }) => {
     
     <aside className={`sidebar soft-panel ${isOpen ? 'active' : ''}`}>
       <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginBottom: '48px', width: '100%' }}>
-        <img src={logo} alt="R&D Deadline Management Logo" style={{ height: '56px', width: 'auto', marginBottom: '16px' }} />
+        <img src={logo} alt="RNDSP Deadline Management Logo" style={{ height: '56px', width: 'auto', marginBottom: '16px' }} />
         <h2 style={{ fontSize: '16px', fontWeight: '800', letterSpacing: '1px', color: 'var(--primary-accent)', lineHeight: '1.4', textTransform: 'uppercase' }}>
-          R&D Deadline<br />Management
+          RNDSP Deadline<br />Management
         </h2>
         
         {/* Mobile close button - absolute to not affect centering */}
@@ -45,7 +45,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           {({ isActive }) => (
             <div className={`btn-ghost ${isActive ? 'active' : ''}`}>
               <LayoutDashboard size={20} strokeWidth={isActive ? 2.5 : 2} />
-              <span>Week Calendar</span>
+              <span>Weekly Task</span>
             </div>
           )}
         </NavLink>
@@ -54,7 +54,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           {({ isActive }) => (
             <div className={`btn-ghost ${isActive ? 'active' : ''}`}>
               <CalendarClock size={20} strokeWidth={isActive ? 2.5 : 2} />
-              <span>Month Calendar</span>
+              <span>Month Report/Meeting</span>
             </div>
           )}
         </NavLink>

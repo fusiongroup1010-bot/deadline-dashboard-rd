@@ -173,7 +173,7 @@ const TaskModal = () => {
             </div>
           </div>
 
-          {/* Send to Departments (Only for Month Calendar - Meeting / Report) */}
+          {/* Send to Departments (Only for Month Report/Meeting - Meeting / Report) */}
           {isMonthCalendar && ['meeting', 'report'].includes(form.type) && (
             <div className="form-group" style={{ marginTop: '16px', marginBottom: '16px' }}>
               <label style={labelStyle}>Send Invite / Report to Departments</label>

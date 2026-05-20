@@ -87,7 +87,7 @@ const CalendarView = () => {
     <div style={{ padding: '0 40px 24px' }} className="animate-fade-in calendar-page-root">
       <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <h1 style={{ fontSize: '26px', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>Month Calendar</h1>
+          <h1 style={{ fontSize: '26px', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>Month Report/Meeting</h1>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', background: 'var(--bg-panel)', padding: '6px 16px', borderRadius: '24px', boxShadow: 'var(--shadow-soft)', border: '1px solid var(--border-light)' }}>
             <button onClick={handlePrevMonth} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', color: 'var(--text-secondary)' }}><ChevronLeft size={20} /></button>
             <span style={{ fontSize: '15px', fontWeight: '800', minWidth: '130px', textAlign: 'center', color: 'var(--text-primary)' }}>{monthRangeStr}</span>

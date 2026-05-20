@@ -267,7 +267,7 @@ const TaskBoard = () => {
     <div style={{ padding: '0 40px 24px' }} className="animate-fade-in calendar-page-root">
       <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <h1 style={{ fontSize: '26px', fontWeight: '800', marginBottom: '8px', color: 'var(--text-primary)' }}>Week Calendar</h1>
+          <h1 style={{ fontSize: '26px', fontWeight: '800', marginBottom: '8px', color: 'var(--text-primary)' }}>Weekly Task</h1>
           <p style={{ color: 'var(--text-secondary)', fontWeight: '600', fontSize: '15px' }}>
             Showing tasks for week of {format(weekStart, 'MMM d', { locale: enUS })}.
           </p>
