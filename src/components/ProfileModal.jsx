@@ -124,13 +124,7 @@ const ProfileModal = ({ isOpen, onClose, initialMode = 'view' }) => {
                     </div>
                 </div>
 
-                <div style={{ padding: '16px', background: 'var(--bg-main)', borderRadius: '16px', border: '1px solid var(--border-light)', display: 'flex', gap: '12px', alignItems: 'center' }}>
-                    <MapPin size={18} color="var(--primary-accent)" />
-                    <div>
-                        <p style={{ margin: 0, fontSize: '10px', fontWeight: '800', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Branch Address</p>
-                        <p style={{ margin: 0, fontSize: '15px', fontWeight: '700', color: 'var(--text-primary)', textTransform: 'uppercase' }}>{currentUser.address || currentUser.allowedLocations[0]}</p>
-                    </div>
-                </div>
+
 
                 <div style={{ padding: '16px', background: 'var(--bg-main)', borderRadius: '16px', border: '1px solid var(--border-light)', display: 'flex', gap: '12px', alignItems: 'center' }}>
                     <Hash size={18} color="var(--primary-accent)" />
@@ -164,14 +158,7 @@ const ProfileModal = ({ isOpen, onClose, initialMode = 'view' }) => {
                     <input value={tempDept} onChange={e => setTempDept(e.target.value)} placeholder="e.g. Sales, Account..." style={{ width: '100%', padding: '12px', borderRadius: '12px', border: '1px solid var(--border-light)', outline: 'none' }} />
                 </div>
 
-                <div className="form-group-mini">
-                    <label style={{ fontSize: '12px', fontWeight: '800', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Address Region</label>
-                    <select value={tempAddr} onChange={e => setTempAddr(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '12px', border: '1px solid var(--border-light)', outline: 'none', background: 'white' }}>
-                        <option value="HANOI">HANOI</option>
-                        <option value="HCM">HCM</option>
-                        <option value="HUNGYEN">HUNGYEN</option>
-                    </select>
-                </div>
+
               </div>
 
               <div style={{ marginTop: '32px', display: 'flex', gap: '10px' }}>
