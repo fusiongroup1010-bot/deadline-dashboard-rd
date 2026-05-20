@@ -49,10 +49,12 @@ const NotifyBoard = () => {
 
   const ScopeLabel = {
       all: 'Company Wide',
-      rnd: 'R&D Department',
-      mms: 'MMS Department',
-      'sale-online': 'Sale Online Department',
-      logistics: 'Logistics Department'
+      rnd: 'RNDSP Department',
+      design: 'HY Design Department',
+      mms: 'MMKP Department',
+      'hn-mkt': 'HN MKT Department',
+      evolution: 'Evolution Department',
+      crm: 'CRM Department'
   };
 
   return (
@@ -103,10 +105,12 @@ const NotifyBoard = () => {
                   onChange={e => setRecipientScope(e.target.value)}
                   style={{ width: '100%', padding: '12px', borderRadius: '12px', border: '1px solid var(--border-light)', outline: 'none', background: 'white', fontWeight: '700', color: 'var(--text-primary)' }}
                 >
-                  <option value="rnd">R&D</option>
-                  <option value="mms">MMS</option>
-                  <option value="sale-online">Sale Online</option>
-                  <option value="logistics">Logistics</option>
+                  <option value="rnd">RNDSP</option>
+                  <option value="design">HY Design</option>
+                  <option value="mms">MMKP</option>
+                  <option value="hn-mkt">HN MKT</option>
+                  <option value="evolution">Evolution</option>
+                  <option value="crm">CRM</option>
                 </select>
               </div>
 

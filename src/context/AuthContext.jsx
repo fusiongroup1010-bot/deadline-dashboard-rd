@@ -4,11 +4,12 @@ const AuthContext = createContext();
 
 export const EMPLOYEES = [
   // Department-based logins with default pass FS1234
-  { id: 'rnd', name: 'R&D Department', role: 'admin', pass: 'FS1234', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi', 'hcm', 'hungyen'], canSendNotify: true, notifyScope: 'all', title: 'R&D' },
-  { id: 'design', name: 'Design Department', role: 'admin', pass: 'FS1234', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi', 'hcm', 'hungyen'], canSendNotify: true, notifyScope: 'all', title: 'Design' },
-  { id: 'mms', name: 'MMS Department', role: 'admin', pass: 'FS1234', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi', 'hcm', 'hungyen'], canSendNotify: true, notifyScope: 'all', title: 'MMS' },
-  { id: 'sale-online', name: 'Sale Online Department', role: 'admin', pass: 'FS1234', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi', 'hcm', 'hungyen'], canSendNotify: true, notifyScope: 'all', title: 'Sale Online' },
-  { id: 'logistics', name: 'Logistics Department', role: 'admin', pass: 'FS1234', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi', 'hcm', 'hungyen'], canSendNotify: true, notifyScope: 'all', title: 'Logistics' },
+  { id: 'rnd', name: 'RNDSP Department', role: 'admin', pass: 'FS1234', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi', 'hcm', 'hungyen'], canSendNotify: true, notifyScope: 'all', title: 'RNDSP' },
+  { id: 'design', name: 'HY Design Department', role: 'admin', pass: 'FS1234', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi', 'hcm', 'hungyen'], canSendNotify: true, notifyScope: 'all', title: 'HY Design' },
+  { id: 'mms', name: 'MMKP Department', role: 'admin', pass: 'FS1234', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi', 'hcm', 'hungyen'], canSendNotify: true, notifyScope: 'all', title: 'MMKP' },
+  { id: 'hn-mkt', name: 'HN MKT Department', role: 'admin', pass: 'FS1234', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi', 'hcm', 'hungyen'], canSendNotify: true, notifyScope: 'all', title: 'HN MKT' },
+  { id: 'evolution', name: 'Evolution Department', role: 'admin', pass: 'FS1234', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi', 'hcm', 'hungyen'], canSendNotify: true, notifyScope: 'all', title: 'Evolution' },
+  { id: 'crm', name: 'CRM Department', role: 'admin', pass: 'FS1234', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi', 'hcm', 'hungyen'], canSendNotify: true, notifyScope: 'all', title: 'CRM' },
 
   // CEO - Access & Edit All
   { id: 'CEOFS', name: 'CEO', role: 'admin', pass: 'CEOChoFS', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi', 'hcm', 'hungyen'], canSendNotify: true, notifyScope: 'all', title: 'CEO' },
@@ -77,7 +78,7 @@ export function AuthProvider({ children }) {
 
   function login(userId, password = '', customName = '') {
     // Restriction: Only authorized IDs are allowed
-    const authorized = ['lelienfs', 'thanhtrafs', 'tranhfs', 'nganhfs', 'tnhanfs', 'nanhfs', 'tnganfs', 'phlinhfs', 'rnd', 'design', 'mms', 'sale-online', 'logistics'];
+    const authorized = ['lelienfs', 'thanhtrafs', 'tranhfs', 'nganhfs', 'tnhanfs', 'nanhfs', 'tnganfs', 'phlinhfs', 'rnd', 'design', 'mms', 'hn-mkt', 'evolution', 'crm'];
     if (!authorized.includes(userId.toLowerCase())) {
       return Promise.reject(new Error('Access Denied. Only authorized staff are authorized to access this software at this time.'));
     }

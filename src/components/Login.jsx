@@ -4,11 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { Key, Eye, EyeOff } from 'lucide-react';
 
 const DEPT_LOGINS = [
-  { id: 'rnd', name: 'Phòng R&D', displayNames: ['Trà', 'Thanh', 'Nam'] },
-  { id: 'design', name: 'Phòng Design', displayNames: ['Linh'] },
-  { id: 'mms', name: 'Phòng MMS', displayNames: ['Lan Anh', 'Trang'] },
-  { id: 'sale-online', name: 'Phòng Sale Online', displayNames: ['Thảo', 'CRM1', 'CRM2'] },
-  { id: 'logistics', name: 'Phòng Logistics', displayNames: ['Log Admin'] }
+  { id: 'rnd', name: 'Phòng RNDSP', displayNames: ['Trà', 'Thanh', 'Nam'] },
+  { id: 'design', name: 'Phòng HY Design', displayNames: ['Linh'] },
+  { id: 'mms', name: 'Phòng MMKP', displayNames: ['Lan Anh', 'Trang'] },
+  { id: 'hn-mkt', name: 'Phòng HN MKT', displayNames: ['Phuc'] },
+  { id: 'evolution', name: 'Phòng Evolution', displayNames: ['Thảo'] },
+  { id: 'crm', name: 'Phòng CRM', displayNames: ['CRM1', 'CRM2'] }
 ];
 
 const Login = () => {

@@ -3,10 +3,12 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 /* ── Combined Departments (Location-based categories) ── */
 export const DEPARTMENTS = {
   all: [
-    { id: 'rnd', name: 'R&D', color: '#22c55e', text: '#ffffff', accent: '#22c55e' },
-    { id: 'mms', name: 'MMS', color: '#3b82f6', text: '#ffffff', accent: '#3b82f6' },
-    { id: 'sale-online', name: 'Sale Online', color: '#eab308', text: '#ffffff', accent: '#eab308' },
-    { id: 'design', name: 'Design', color: '#ec4899', text: '#ffffff', accent: '#ec4899' },
+    { id: 'rnd', name: 'RNDSP', color: '#22c55e', text: '#ffffff', accent: '#22c55e' },
+    { id: 'design', name: 'HY Design', color: '#ec4899', text: '#ffffff', accent: '#ec4899' },
+    { id: 'mms', name: 'MMKP', color: '#3b82f6', text: '#ffffff', accent: '#3b82f6' },
+    { id: 'hn-mkt', name: 'HN MKT', color: '#10b981', text: '#ffffff', accent: '#10b981' },
+    { id: 'evolution', name: 'Evolution', color: '#eab308', text: '#ffffff', accent: '#eab308' },
+    { id: 'crm', name: 'CRM', color: '#8b5cf6', text: '#ffffff', accent: '#8b5cf6' },
   ]
 };
 
