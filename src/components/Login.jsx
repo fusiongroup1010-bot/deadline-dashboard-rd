@@ -5,7 +5,7 @@ import { Key, Eye, EyeOff } from 'lucide-react';
 
 const DEPT_LOGINS = [
   { id: 'rnd', name: 'Phòng R&D', displayNames: ['Trà', 'Thanh', 'Nam'] },
-  { id: 'design', name: 'Phòng Design', displayNames: ['Designer', 'Design Admin'] },
+  { id: 'design', name: 'Phòng Design', displayNames: ['Linh'] },
   { id: 'mms', name: 'Phòng MMS', displayNames: ['Lan Anh', 'Trang'] },
   { id: 'sale-online', name: 'Phòng Sale Online', displayNames: ['Thảo', 'CRM1', 'CRM2'] },
   { id: 'logistics', name: 'Phòng Logistics', displayNames: ['Log Admin'] }
