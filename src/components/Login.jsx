@@ -1,34 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Shield, Building2 } from 'lucide-react';
-import logo from '../assets/fusion-logo.png';
+import { Key, Eye, EyeOff } from 'lucide-react';
 
 const DEPT_LOGINS = [
   { id: 'rnd', name: 'Phòng R&D', displayNames: ['Trà', 'Thanh', 'Nam'] },
-  { id: 'sale-online', name: 'Phòng Sale Online', displayNames: ['Thảo', 'CRM1', 'CRM2'] },
+  { id: 'design', name: 'Phòng Design', displayNames: ['Designer', 'Design Admin'] },
   { id: 'mms', name: 'Phòng MMS', displayNames: ['Lan Anh', 'Trang'] },
-  { id: 'logistics', name: 'Phòng Logistics', displayNames: ['Log Admin'] },
-  { id: 'design', name: 'Phòng Design', displayNames: ['Design Admin', 'Designer'] }
+  { id: 'sale-online', name: 'Phòng Sale Online', displayNames: ['Thảo', 'CRM1', 'CRM2'] },
+  { id: 'logistics', name: 'Phòng Logistics', displayNames: ['Log Admin'] }
 ];
 
 const Login = () => {
-  const [loginMode, setLoginMode] = useState('dept'); // 'dept' or 'id'
   const [selectedDeptId, setSelectedDeptId] = useState('rnd');
   const [selectedName, setSelectedName] = useState('');
-  const [deptPassword, setDeptPassword] = useState('FS1234');
-  
-  const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberId, setRememberId] = useState(true);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  // Set default name when department changes
+  // Automatically update the display name when department changes
   useEffect(() => {
     const dept = DEPT_LOGINS.find(d => d.id === selectedDeptId);
     if (dept && dept.displayNames.length > 0) {
@@ -36,223 +30,342 @@ const Login = () => {
     }
   }, [selectedDeptId]);
 
-  useEffect(() => {
-    const savedId = localStorage.getItem('rememberedId');
-    if (savedId) {
-      setUserId(savedId);
-      setRememberId(true);
-    }
-  }, []);
-
   async function handleSubmit(e) {
     if (e) e.preventDefault();
     try {
       setError('');
       setLoading(true);
       
-      if (loginMode === 'dept') {
-        // Department Login
-        await login(selectedDeptId, deptPassword, selectedName);
-      } else {
-        // Traditional ID Login
-        await login(userId, password);
-        if (rememberId && userId.toLowerCase() !== 'guest') {
-          localStorage.setItem('rememberedId', userId);
-        } else {
-          localStorage.removeItem('rememberedId');
-        }
-      }
+      // Perform login with selected department ID, typed password, and chosen display name
+      await login(selectedDeptId, password, selectedName);
       navigate('/');
     } catch (err) {
-      setError(err.message || 'Incorrect credentials or access denied.');
+      setError(err.message || 'Sai mật khẩu hoặc quyền truy cập bị từ chối.');
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="login-page" style={{ background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)' }}>
-      <div className="login-card animate-fade-in" style={{ boxShadow: '0 20px 40px rgba(34, 197, 94, 0.08)', borderRadius: '24px', border: '1px solid var(--border-light)' }}>
-        <div className="login-header" style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <img 
-            src={logo} 
-            alt="Fusion Group Logo" 
-            style={{ width: '110px', height: 'auto', marginBottom: '16px' }} 
-          />
-          <h1 className="text-gradient" style={{ fontSize: '24px', fontWeight: '800', lineHeight: '1.2', background: 'linear-gradient(135deg, #15803d 0%, #166534 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>RNDSP Deadline Management</h1>
-          <p className="login-subtitle" style={{ fontSize: '15px', fontWeight: '700', marginTop: '8px', color: 'var(--text-secondary)' }}>Hệ thống Quản lý Tiến độ R&D</p>
+    <div style={{
+      position: 'relative',
+      width: '100%',
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: 'linear-gradient(135deg, #eef4f8 0%, #d8e3ed 100%)',
+      fontFamily: "'Nunito', -apple-system, sans-serif",
+      overflow: 'hidden',
+      padding: '20px'
+    }}>
+      {/* Decorative Blur Circles for Glassmorphism Background Depth */}
+      <div style={{
+        width: '320px',
+        height: '320px',
+        background: 'rgba(43, 112, 201, 0.14)',
+        borderRadius: '50%',
+        filter: 'blur(80px)',
+        position: 'absolute',
+        top: '15%',
+        left: '20%',
+        zIndex: 1
+      }} />
+      <div style={{
+        width: '380px',
+        height: '380px',
+        background: 'rgba(14, 165, 233, 0.12)',
+        borderRadius: '50%',
+        filter: 'blur(100px)',
+        position: 'absolute',
+        bottom: '15%',
+        right: '20%',
+        zIndex: 1
+      }} />
+
+      {/* Main Login Card */}
+      <div className="animate-fade-in" style={{
+        position: 'relative',
+        zIndex: 10,
+        width: '100%',
+        maxWidth: '430px',
+        background: '#ffffff',
+        borderRadius: '32px',
+        padding: '48px 36px 40px 36px',
+        boxShadow: '0 25px 50px -12px rgba(15, 23, 42, 0.08), 0 0 1px 1px rgba(15, 23, 42, 0.02)',
+        border: '1px solid rgba(255, 255, 255, 0.8)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+      }}>
+        
+        {/* Blue Rounded Key Icon Block */}
+        <div style={{
+          width: '76px',
+          height: '76px',
+          background: 'linear-gradient(135deg, #2b70c9 0%, #1e5ba3 100%)',
+          borderRadius: '22px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: '0 10px 25px rgba(43, 112, 201, 0.25)',
+          marginBottom: '24px'
+        }}>
+          <Key size={34} style={{ color: '#fbbf24', transform: 'rotate(-45deg)' }} />
         </div>
 
-        {/* Tab Selector */}
-        <div style={{ display: 'flex', background: 'var(--bg-main)', padding: '4px', borderRadius: '14px', margin: '24px 0 20px 0', border: '1px solid var(--border-light)' }}>
-          <button
-            type="button"
-            onClick={() => { setLoginMode('dept'); setError(''); }}
-            style={{
-              flex: 1, padding: '10px 14px', borderRadius: '10px', border: 'none',
-              background: loginMode === 'dept' ? 'var(--primary-accent)' : 'transparent',
-              color: loginMode === 'dept' ? 'white' : 'var(--text-secondary)',
-              fontSize: '13px', fontWeight: '800', cursor: 'pointer',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
-              transition: 'all 0.2s ease'
-            }}
-          >
-            <Building2 size={16} />
-            Đăng nhập Phòng Ban
-          </button>
-          <button
-            type="button"
-            onClick={() => { setLoginMode('id'); setError(''); }}
-            style={{
-              flex: 1, padding: '10px 14px', borderRadius: '10px', border: 'none',
-              background: loginMode === 'id' ? 'var(--primary-accent)' : 'transparent',
-              color: loginMode === 'id' ? 'white' : 'var(--text-secondary)',
-              fontSize: '13px', fontWeight: '800', cursor: 'pointer',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
-              transition: 'all 0.2s ease'
-            }}
-          >
-            <Shield size={16} />
-            Đăng nhập Mã ID
-          </button>
-        </div>
+        {/* Header Text */}
+        <h1 style={{
+          fontSize: '22px',
+          fontWeight: '900',
+          color: '#0f172a',
+          letterSpacing: '0.5px',
+          marginBottom: '10px',
+          textTransform: 'uppercase',
+          textAlign: 'center'
+        }}>
+          Đăng nhập phòng ban
+        </h1>
+        <p style={{
+          fontSize: '13px',
+          color: '#64748b',
+          fontWeight: '600',
+          lineHeight: '1.5',
+          maxWidth: '310px',
+          textAlign: 'center',
+          marginBottom: '32px'
+        }}>
+          Chọn phòng ban của bạn và nhập mật khẩu truy cập để chỉnh sửa báo cáo liên kết.
+        </p>
 
-        {error && <div className="login-error" style={{ marginBottom: '16px', padding: '10px 16px', borderRadius: '10px' }}>{error}</div>}
+        {/* Error Display */}
+        {error && (
+          <div style={{
+            width: '100%',
+            background: '#fef2f2',
+            border: '1px solid #fecaca',
+            color: '#dc2626',
+            padding: '12px 16px',
+            borderRadius: '14px',
+            fontSize: '13px',
+            fontWeight: '700',
+            textAlign: 'center',
+            marginBottom: '20px'
+          }}>
+            {error}
+          </div>
+        )}
 
-        <form onSubmit={handleSubmit} className="login-form">
-          {loginMode === 'dept' ? (
-            /* Department login fields */
-            <>
-              <div className="form-group" style={{ marginBottom: '16px' }}>
-                <label style={{ fontSize: '13px', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '6px', display: 'block' }}>Chọn phòng ban</label>
-                <select
-                  value={selectedDeptId}
-                  onChange={(e) => setSelectedDeptId(e.target.value)}
-                  style={{ width: '100%', padding: '12px 16px', borderRadius: '12px', border: '1px solid var(--border-light)', fontFamily: 'inherit', fontSize: '15px', fontWeight: '700', background: 'var(--bg-main)', color: 'var(--text-primary)', outline: 'none' }}
-                >
-                  {DEPT_LOGINS.map(dept => (
-                    <option key={dept.id} value={dept.id}>{dept.name}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="form-group" style={{ marginBottom: '16px' }}>
-                <label style={{ fontSize: '13px', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '6px', display: 'block' }}>Tên thành viên hiển thị</label>
-                <select
-                  value={selectedName}
-                  onChange={(e) => setSelectedName(e.target.value)}
-                  style={{ width: '100%', padding: '12px 16px', borderRadius: '12px', border: '1px solid var(--border-light)', fontFamily: 'inherit', fontSize: '15px', fontWeight: '700', background: 'var(--bg-main)', color: 'var(--text-primary)', outline: 'none' }}
-                >
-                  {DEPT_LOGINS.find(d => d.id === selectedDeptId)?.displayNames.map(name => (
-                    <option key={name} value={name}>{name}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="form-group" style={{ marginBottom: '20px' }}>
-                <label style={{ fontSize: '13px', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '6px', display: 'block' }}>Mật khẩu đăng nhập</label>
-                <div style={{ position: 'relative' }}>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    value={deptPassword}
-                    onChange={(e) => setDeptPassword(e.target.value)}
-                    required
-                    placeholder="Nhập mật khẩu"
-                    style={{ width: '100%', padding: '12px 16px', borderRadius: '12px', border: '1px solid var(--border-light)', fontFamily: 'inherit', fontSize: '15px', background: 'var(--bg-main)', color: 'var(--text-primary)', outline: 'none' }}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    style={{
-                      position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)',
-                      background: 'none', border: 'none', padding: '4px', cursor: 'pointer',
-                      color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center'
-                    }}
-                  >
-                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
-                </div>
-              </div>
-            </>
-          ) : (
-            /* Traditional ID-based login fields */
-            <>
-              <div className="form-group" style={{ marginBottom: '16px' }}>
-                <label htmlFor="userId" style={{ fontSize: '13px', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '6px', display: 'block' }}>Mã nhân sự (Employee ID)</label>
-                <input
-                  type="text"
-                  id="userId"
-                  value={userId}
-                  onChange={(e) => setUserId(e.target.value)}
-                  required
-                  placeholder="Ví dụ: TrangSamFS, LeLienFS..."
-                  style={{ width: '100%', padding: '12px 16px', borderRadius: '12px', border: '1px solid var(--border-light)', fontFamily: 'inherit', fontSize: '15px', background: 'var(--bg-main)', color: 'var(--text-primary)', outline: 'none' }}
-                />
-              </div>
-              
-              <div className="form-group" style={{ marginBottom: '16px' }}>
-                <label htmlFor="password" style={{ fontSize: '13px', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '6px', display: 'block' }}>Mật khẩu (Password)</label>
-                <div style={{ position: 'relative' }}>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    placeholder="Nhập mật khẩu của bạn"
-                    style={{ width: '100%', padding: '12px 16px', borderRadius: '12px', border: '1px solid var(--border-light)', fontFamily: 'inherit', fontSize: '15px', background: 'var(--bg-main)', color: 'var(--text-primary)', outline: 'none' }}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    style={{
-                      position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)',
-                      background: 'none', border: 'none', padding: '4px', cursor: 'pointer',
-                      color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center'
-                    }}
-                  >
-                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
-                </div>
-              </div>
-              
-              <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
-                <input 
-                  type="checkbox" 
-                  id="remember" 
-                  style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-                  checked={rememberId}
-                  onChange={(e) => setRememberId(e.target.checked)}
-                />
-                <label htmlFor="remember" style={{ margin: 0, cursor: 'pointer', fontSize: '14px', fontWeight: '700' }}>Ghi nhớ ID của tôi</label>
-              </div>
-            </>
-          )}
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <button 
-              disabled={loading} 
-              className="btn-primary login-btn" 
-              type="submit"
+        {/* Login Form */}
+        <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+          
+          {/* Department Selection */}
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{
+              fontSize: '11px',
+              fontWeight: '800',
+              color: '#475569',
+              letterSpacing: '0.75px',
+              textTransform: 'uppercase',
+              marginBottom: '8px',
+              display: 'block'
+            }}>
+              Phòng ban / Department
+            </label>
+            <select
+              value={selectedDeptId}
+              onChange={(e) => setSelectedDeptId(e.target.value)}
               style={{
-                width: '100%', padding: '14px 20px', borderRadius: '14px', border: 'none',
-                background: 'linear-gradient(135deg, #22c55e 0%, #15803d 100%)',
-                color: 'white', fontSize: '16px', fontWeight: '800', cursor: 'pointer',
-                boxShadow: '0 8px 24px rgba(34, 197, 94, 0.25)', transition: 'all 0.2s ease',
-                display: 'flex', alignItems: 'center', justifyContent: 'center'
+                width: '100%',
+                padding: '13px 16px',
+                borderRadius: '14px',
+                border: '1px solid #cbd5e1',
+                fontFamily: 'inherit',
+                fontSize: '15px',
+                fontWeight: '700',
+                background: '#ffffff',
+                color: '#1e293b',
+                outline: 'none',
+                cursor: 'pointer',
+                transition: 'border-color 0.2s ease, box-shadow 0.2s ease'
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#2b70c9';
+                e.target.style.boxShadow = '0 0 0 3px rgba(43, 112, 201, 0.15)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = '#cbd5e1';
+                e.target.style.boxShadow = 'none';
               }}
             >
-              {loading ? 'Vui lòng đợi...' : 'Đăng Nhập'}
-            </button>
+              {DEPT_LOGINS.map(dept => (
+                <option key={dept.id} value={dept.id}>{dept.name}</option>
+              ))}
+            </select>
           </div>
+
+          {/* Member Name Selection */}
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{
+              fontSize: '11px',
+              fontWeight: '800',
+              color: '#475569',
+              letterSpacing: '0.75px',
+              textTransform: 'uppercase',
+              marginBottom: '8px',
+              display: 'block'
+            }}>
+              Tên thành viên / Member
+            </label>
+            <select
+              value={selectedName}
+              onChange={(e) => setSelectedName(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '13px 16px',
+                borderRadius: '14px',
+                border: '1px solid #cbd5e1',
+                fontFamily: 'inherit',
+                fontSize: '15px',
+                fontWeight: '700',
+                background: '#ffffff',
+                color: '#1e293b',
+                outline: 'none',
+                cursor: 'pointer',
+                transition: 'border-color 0.2s ease, box-shadow 0.2s ease'
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#2b70c9';
+                e.target.style.boxShadow = '0 0 0 3px rgba(43, 112, 201, 0.15)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = '#cbd5e1';
+                e.target.style.boxShadow = 'none';
+              }}
+            >
+              {DEPT_LOGINS.find(d => d.id === selectedDeptId)?.displayNames.map(name => (
+                <option key={name} value={name}>{name}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Password Input */}
+          <div style={{ marginBottom: '28px' }}>
+            <label style={{
+              fontSize: '11px',
+              fontWeight: '800',
+              color: '#475569',
+              letterSpacing: '0.75px',
+              textTransform: 'uppercase',
+              marginBottom: '8px',
+              display: 'block'
+            }}>
+              Mật khẩu / Password
+            </label>
+            <div style={{ position: 'relative' }}>
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                placeholder="Nhập mật khẩu..."
+                style={{
+                  width: '100%',
+                  padding: '13px 44px 13px 16px',
+                  borderRadius: '14px',
+                  border: '1px solid #cbd5e1',
+                  fontFamily: 'inherit',
+                  fontSize: '15px',
+                  fontWeight: '600',
+                  color: '#1e293b',
+                  background: '#ffffff',
+                  outline: 'none',
+                  transition: 'border-color 0.2s ease, box-shadow 0.2s ease'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#2b70c9';
+                  e.target.style.boxShadow = '0 0 0 3px rgba(43, 112, 201, 0.15)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#cbd5e1';
+                  e.target.style.boxShadow = 'none';
+                }}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                style={{
+                  position: 'absolute',
+                  right: '14px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'none',
+                  border: 'none',
+                  padding: '4px',
+                  cursor: 'pointer',
+                  color: '#64748b',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  outline: 'none'
+                }}
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            disabled={loading}
+            type="submit"
+            style={{
+              width: '100%',
+              padding: '14px 20px',
+              borderRadius: '14px',
+              border: 'none',
+              background: 'linear-gradient(135deg, #2b70c9 0%, #1e5ba3 100%)',
+              color: '#ffffff',
+              fontSize: '15px',
+              fontWeight: '800',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              transition: 'all 0.2s ease',
+              boxShadow: '0 8px 20px rgba(43, 112, 201, 0.25)'
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.boxShadow = '0 10px 24px rgba(43, 112, 201, 0.35)';
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.transform = 'none';
+              e.currentTarget.style.boxShadow = '0 8px 20px rgba(43, 112, 201, 0.25)';
+            }}
+            onMouseDown={(e) => {
+              e.currentTarget.style.transform = 'translateY(1px)';
+            }}
+          >
+            {loading ? 'Đang xác thực...' : '🔑 Đăng nhập'}
+          </button>
+
         </form>
 
-        <div className="login-footer" style={{ textAlign: 'center', marginTop: '24px', fontSize: '12px', color: 'var(--text-muted)' }}>
-          <p>© 2026 RNDSP Deadline Management. All rights reserved.</p>
+        {/* Footer Credit */}
+        <div style={{
+          marginTop: '36px',
+          fontSize: '11px',
+          color: '#94a3b8',
+          fontWeight: '600'
+        }}>
+          © 2026 RNDSP Deadline Management.
         </div>
+
       </div>
     </div>
-);
+  );
 };
 
 export default Login;

@@ -12,7 +12,6 @@ export const EMPLOYEES = [
 
   // CEO - Access & Edit All
   { id: 'CEOFS', name: 'CEO', role: 'admin', pass: 'CEOChoFS', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi', 'hcm', 'hungyen'], canSendNotify: true, notifyScope: 'all', title: 'CEO' },
-   { id: 'TrangSamFS', name: 'Trang Sam', role: 'admin', pass: 'fusion2026', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi', 'hcm', 'hungyen'], canSendNotify: true, notifyScope: 'all', title: 'CEO' },
   { id: 'LeLienFS', name: 'Le Lien', role: 'admin', pass: 'fusion2026', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi', 'hcm', 'hungyen'], canSendNotify: true, notifyScope: 'all', title: 'CEO' },
   { id: 'ThanhTraFS', name: 'Thanh Tra', role: 'admin', pass: 'fusion2026', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi', 'hcm', 'hungyen'], canSendNotify: true, notifyScope: 'all', title: 'CEO' },
   { id: 'TrAnhFS', name: 'Tr Anh', role: 'admin', pass: 'fusion2026', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi', 'hcm', 'hungyen'], canSendNotify: true, notifyScope: 'all', title: 'Admin' },
@@ -26,7 +25,6 @@ export const EMPLOYEES = [
   // Hanoi Authorized Staff - View All, Edit Hanoi
   { id: 'DMHuong', name: 'Huong', role: 'admin', pass: 'DMHFS123', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi'], canSendNotify: true, notifyScope: 'restricted', title: 'Branch Manager' },
   { id: 'Trangxu', name: 'Trang Xu', role: 'admin', pass: 'TrangX345!', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi'], canSendNotify: false, title: 'Staff' },
-  { id: 'Trangsam', name: 'Trang Sam', role: 'admin', pass: 'TrangS345@', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi'], canSendNotify: false, title: 'Staff' },
   { id: 'DungAd', name: 'Dung Admin', role: 'admin', pass: 'Dung123!', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi'], canSendNotify: false, title: 'Sale Admin' },
   { id: 'ThuyAC', name: 'Thuy Acc', role: 'admin', pass: 'Thuy123#', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi'], canSendNotify: false, title: 'Accountant' },
   { id: 'PhucMKT', name: 'Phuc MKT', role: 'admin', pass: 'Phuc345@', allowedLocations: ['hanoi', 'hcm', 'hungyen'], editableLocations: ['hanoi'], canSendNotify: false, title: 'MKT' },
@@ -73,17 +71,13 @@ export function AuthProvider({ children }) {
     const savedUser = localStorage.getItem('mockUser_sonl');
     if (savedUser) {
       setCurrentUser(JSON.parse(savedUser));
-    } else {
-      // Auto-login as Trang Sam for R&D purposes
-      const defaultUser = EMPLOYEES.find(e => e.id === 'TrangSamFS');
-      setCurrentUser(defaultUser);
     }
     setLoading(false);
   }, []);
 
   function login(userId, password = '', customName = '') {
     // Restriction: Only authorized IDs are allowed
-    const authorized = ['trangsamfs', 'lelienfs', 'thanhtrafs', 'tranhfs', 'nganhfs', 'tnhanfs', 'nanhfs', 'tnganfs', 'phlinhfs', 'rnd', 'design', 'mms', 'sale-online', 'logistics'];
+    const authorized = ['lelienfs', 'thanhtrafs', 'tranhfs', 'nganhfs', 'tnhanfs', 'nanhfs', 'tnganfs', 'phlinhfs', 'rnd', 'design', 'mms', 'sale-online', 'logistics'];
     if (!authorized.includes(userId.toLowerCase())) {
       return Promise.reject(new Error('Access Denied. Only authorized staff are authorized to access this software at this time.'));
     }

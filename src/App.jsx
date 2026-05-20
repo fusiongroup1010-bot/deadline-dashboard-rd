@@ -39,8 +39,6 @@ function AppContent() {
     }
   }, []);
 
-  // Temporary bypass login for R&D
-  /*
   if (!currentUser) {
     return (
       <Routes>
@@ -49,7 +47,6 @@ function AppContent() {
       </Routes>
     );
   }
-  */
 
   return (
     <div className={`app-container ${isSidebarOpen ? 'sidebar-active' : ''}`}>
