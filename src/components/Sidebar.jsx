@@ -34,36 +34,32 @@ const Sidebar = ({ isOpen, onClose }) => {
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <p style={{ fontSize: '12px', fontWeight: '800', color: 'var(--text-muted)', marginBottom: '8px', paddingLeft: '16px', textTransform: 'uppercase', letterSpacing: '1px' }}>Main Menu</p>
         
-        {!currentUser?.isSpecialAccount && (
-          <>
-            <NavLink to="/" style={{ textDecoration: 'none' }} end>
-              {({ isActive }) => (
-                <div className={`btn-ghost ${isActive ? 'active' : ''}`}>
-                  <Home size={20} strokeWidth={isActive ? 2.5 : 2} />
-                  <span>Dashboard</span>
-                </div>
-              )}
-            </NavLink>
+        <NavLink to="/" style={{ textDecoration: 'none' }} end>
+          {({ isActive }) => (
+            <div className={`btn-ghost ${isActive ? 'active' : ''}`}>
+              <Home size={20} strokeWidth={isActive ? 2.5 : 2} />
+              <span>Dashboard</span>
+            </div>
+          )}
+        </NavLink>
 
-            <NavLink to="/tasks" style={{ textDecoration: 'none' }}>
-              {({ isActive }) => (
-                <div className={`btn-ghost ${isActive ? 'active' : ''}`}>
-                  <LayoutDashboard size={20} strokeWidth={isActive ? 2.5 : 2} />
-                  <span>Weekly Task</span>
-                </div>
-              )}
-            </NavLink>
+        <NavLink to="/tasks" style={{ textDecoration: 'none' }}>
+          {({ isActive }) => (
+            <div className={`btn-ghost ${isActive ? 'active' : ''}`}>
+              <LayoutDashboard size={20} strokeWidth={isActive ? 2.5 : 2} />
+              <span>Weekly Task</span>
+            </div>
+          )}
+        </NavLink>
 
-            <NavLink to="/calendar" style={{ textDecoration: 'none' }}>
-              {({ isActive }) => (
-                <div className={`btn-ghost ${isActive ? 'active' : ''}`}>
-                  <CalendarClock size={20} strokeWidth={isActive ? 2.5 : 2} />
-                  <span>Month Report/Meeting</span>
-                </div>
-              )}
-            </NavLink>
-          </>
-        )}
+        <NavLink to="/calendar" style={{ textDecoration: 'none' }}>
+          {({ isActive }) => (
+            <div className={`btn-ghost ${isActive ? 'active' : ''}`}>
+              <CalendarClock size={20} strokeWidth={isActive ? 2.5 : 2} />
+              <span>Month Report/Meeting</span>
+            </div>
+          )}
+        </NavLink>
 
         <NavLink to="/notify" style={{ textDecoration: 'none' }}>
           {({ isActive }) => (
