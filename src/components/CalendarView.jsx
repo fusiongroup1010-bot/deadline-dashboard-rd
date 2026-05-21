@@ -103,7 +103,7 @@ const CalendarView = () => {
         {/* Main Grid Scroll Area */}
         <div className="calendar-main" id="calendar-scroll-target" style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 'calc(100vh - 120px)' }}>
           <div className="calendar-header-wrapper" style={{ paddingLeft: 0, marginBottom: 0 }}>
-             <div className="calendar-header" style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '1px', background: 'var(--border-light)', borderTop: '1px solid var(--border-light)', borderLeft: '1px solid var(--border-light)' }}>
+             <div className="calendar-header" style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(0, 1fr))', gap: '1px', background: 'var(--border-light)', borderTop: '1px solid var(--border-light)', borderLeft: '1px solid var(--border-light)' }}>
                 {Array.from({ length: 7 }).map((_, i) => {
                   const d = addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), i);
                   const isSunday = i === 6;
@@ -117,7 +117,7 @@ const CalendarView = () => {
           </div>
 
           <div className="calendar-body-scroll" style={{ flex: 1, display: 'flex', flexDirection: 'column', background: 'var(--bg-main)' }}>
-            <div style={{ flex: 1, display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gridTemplateRows: `repeat(${days.length / 7}, minmax(100px, 1fr))`, gap: '1px', background: 'var(--border-light)', borderLeft: '1px solid var(--border-light)', borderBottom: '1px solid var(--border-light)' }}>
+            <div style={{ flex: 1, display: 'grid', gridTemplateColumns: 'repeat(7, minmax(0, 1fr))', gridTemplateRows: `repeat(${days.length / 7}, minmax(100px, 1fr))`, gap: '1px', background: 'var(--border-light)', borderLeft: '1px solid var(--border-light)', borderBottom: '1px solid var(--border-light)' }}>
               {days.map((d, i) => {
                 const isCurrMonth = isSameMonth(d, selectedDate);
                 const isToday = isSameDay(d, new Date());
@@ -165,9 +165,9 @@ const CalendarView = () => {
                              boxShadow: isFocused ? '0 4px 12px rgba(0,0,0,0.15)' : 'none',
                              zIndex: isFocused ? 10 : 1
                            }}>
-                             <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontWeight: '800' }}>
+                             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '4px', fontWeight: '800' }}>
                                 <span style={{flexShrink: 0}}>{isMeeting ? '📅' : '📊'}</span>
-                                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{e.dueTime} {e.title}</span>
+                                <span style={{ whiteSpace: 'normal', wordBreak: 'break-word', display: 'inline-block' }}>{e.dueTime} {e.title}</span>
                              </div>
                              {e.sendToDepartments && e.sendToDepartments.length > 0 && (
                                <div style={{ fontSize: '9.5px', fontWeight: '700', opacity: 0.85, marginTop: '2px', paddingLeft: '18px' }}>

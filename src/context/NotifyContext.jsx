@@ -93,7 +93,10 @@ export const NotifyProvider = ({ children }) => {
     // Expand recipients to actual employee IDs
     const recipientIds = EMPLOYEES
       .filter(emp => {
-        if (notif.recipients.includes('all')) return emp.id !== 'Guest';
+        if (notif.recipients.includes('all')) {
+          const targetDepts = ['rnd', 'design', 'mms', 'hn-mkt', 'evolution', 'crm'];
+          return targetDepts.includes(emp.id.toLowerCase());
+        }
         if (notif.recipients.includes(emp.id)) return true;
         // location-based
         return notif.recipients.some(r => emp.allowedLocations?.includes(r));
