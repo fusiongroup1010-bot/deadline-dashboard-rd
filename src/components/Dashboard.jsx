@@ -184,7 +184,7 @@ const Dashboard = () => {
       {/* KPI row */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '20px' }}>
         {[
-          { key: 'pending',    label: 'Pending in Range', items: dueInRange,  sub: 'tasks/meetings', icon: Clock,         accentColor: '#e11d48', bgColor: '#ffe4e6' },
+          { key: 'pending',    label: 'To-do', items: dueInRange,  sub: 'tasks/meetings', icon: Clock,         accentColor: '#e11d48', bgColor: '#ffe4e6' },
           { key: 'inprogress', label: 'In Progress',      items: inProgress,  sub: 'ongoing',        icon: ArrowRight,    accentColor: '#0284c7', bgColor: '#e0f2fe' },
           { key: 'completed',  label: 'Completed',        items: completed,   sub: 'total done',     icon: CheckCircle,   accentColor: '#16a34a', bgColor: '#dcfce7' },
           { key: 'overdue',    label: 'Overdue',          items: overdue,     sub: 'need attention', icon: AlertTriangle, accentColor: '#e11d48', bgColor: '#ffe4e6' },
@@ -224,7 +224,7 @@ const Dashboard = () => {
       {/* KPI Expanded List */}
       {selectedKpi && (() => {
         const kpiMap = {
-          pending:    { label: 'Pending in Range', items: dueInRange,  accentColor: '#e11d48' },
+          pending:    { label: 'To-do', items: dueInRange,  accentColor: '#e11d48' },
           inprogress: { label: 'In Progress',      items: inProgress,  accentColor: '#0284c7' },
           completed:  { label: 'Completed',        items: completed,   accentColor: '#16a34a' },
           overdue:    { label: 'Overdue',          items: overdue,     accentColor: '#e11d48' },

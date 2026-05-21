@@ -54,12 +54,18 @@ const EventCard = ({ event, topPos, height, leftPos, width, onEdit, onDelete, on
       style={{
         top: `${topPos}%`, left: leftPos, width: width,
         height: `calc(${height}% - 2px)`,
-        minHeight: '76px',
+        minHeight: '82px',
         zIndex: menuOpen ? 200 : (isFocused ? 25 : 15),
         background: event.color, 
         color: event.text, 
         borderColor: event.text,
-        position: 'absolute', overflow: 'visible',
+        position: 'absolute',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        padding: '8px 10px',
+        boxSizing: 'border-box',
+        overflow: 'visible',
         opacity: anyFocused && !isFocused ? 0.15 : 1,
         filter: anyFocused && !isFocused ? 'grayscale(0.5) blur(1px)' : 'none',
         transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -69,130 +75,109 @@ const EventCard = ({ event, topPos, height, leftPos, width, onEdit, onDelete, on
       onMouseLeave={() => { setIsHovered(false); setMenuOpen(false); }}
       onClick={() => { if(canEdit) onOpen(); }}
     >
-      {/* Title + ... button */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '4px' }}>
-        <div className="event-title" style={{ 
-          flex: 1, 
-          textAlign: event.status === 'in-progress' ? 'right' : 'left',
-          fontSize: '11px',
-          lineHeight: '1.2',
-          maxHeight: '3.6em',
-          overflow: 'hidden',
-          display: '-webkit-box',
-          WebkitLineClamp: 3,
-          WebkitBoxOrient: 'vertical'
-        }}>
-          {TYPE_LABEL[event.type] || ''} {event.title}
-          {event.workDescription && (
-            <div style={{ 
-              fontSize: '10px', 
-              fontStyle: 'italic', 
-              marginTop: '2px', 
-              opacity: 0.85,
-              fontWeight: '500',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical'
-            }}>
-              {event.workDescription}
+      {/* Top Part: Title & Dropdown menu */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '4px' }}>
+          <div className="event-title" style={{ 
+            flex: 1, 
+            textAlign: 'left',
+            fontSize: '11px',
+            lineHeight: '1.25',
+            fontWeight: '700',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            wordBreak: 'break-word'
+          }}>
+            {TYPE_LABEL[event.type] || ''} {event.title}
+          </div>
+          {canEdit && (
+            <div style={{ position: 'relative', flexShrink: 0 }} onClick={e => e.stopPropagation()}>
+              <button
+                onClick={(e) => { e.stopPropagation(); setMenuOpen(p => !p); }}
+                style={{
+                  width: '20px', height: '20px', border: 'none',
+                  background: menuOpen ? 'rgba(0,0,0,0.12)' : (isHovered ? 'rgba(0,0,0,0.08)' : 'transparent'),
+                  borderRadius: '6px', cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: 'inherit', opacity: isHovered || menuOpen ? 1 : 0,
+                  transition: 'opacity 0.2s ease', padding: 0,
+                }}
+              >
+                <MoreHorizontal size={14} />
+              </button>
+              {menuOpen && (
+                <div
+                  style={{
+                    position: 'absolute', top: '24px', right: 0,
+                    background: 'var(--bg-panel)', border: '1px solid var(--border-light)',
+                    borderRadius: '12px', boxShadow: '0 12px 36px rgba(0,0,0,0.14)',
+                    padding: '6px', zIndex: 1000, minWidth: '170px',
+                    animation: 'popIn 0.2s cubic-bezier(0.16,1,0.3,1)',
+                  }}
+                >
+                  <div className="context-menu-item" onClick={() => { onEdit(); setMenuOpen(false); }}>
+                    <Edit2 size={14} /> Edit Task
+                  </div>
+                  {event.status !== 'in-progress' && (
+                    <div className="context-menu-item" style={{ color: '#2563eb' }} onClick={() => { onStatusChange('in-progress'); setMenuOpen(false); }}>
+                      <Clock size={14} /> Mark In Progress
+                    </div>
+                  )}
+                  {event.status !== 'done' && (
+                    <div className="context-menu-item" style={{ color: '#16a34a' }} onClick={() => { onStatusChange('done'); setMenuOpen(false); }}>
+                      <CheckCircle size={14} /> Mark Done
+                    </div>
+                  )}
+                  {(event.status === 'done' || event.status === 'in-progress') && (
+                    <div className="context-menu-item" style={{ color: '#d97706' }} onClick={() => { onStatusChange('todo'); setMenuOpen(false); }}>
+                      <RotateCcw size={14} /> Revert to To Do
+                    </div>
+                  )}
+                  <div style={{ height: '1px', background: 'var(--border-light)', margin: '4px 0' }} />
+                  <div className="context-menu-item delete" onClick={() => { onDelete(); setMenuOpen(false); }}>
+                    <Trash2 size={14} /> Delete Task
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
-        {canEdit && (
-          <div style={{ position: 'relative', flexShrink: 0 }}>
-            <button
-              onClick={(e) => { e.stopPropagation(); setMenuOpen(p => !p); }}
-              style={{
-                width: '20px', height: '20px', border: 'none',
-                background: menuOpen ? 'rgba(0,0,0,0.12)' : (isHovered ? 'rgba(0,0,0,0.08)' : 'transparent'),
-                borderRadius: '6px', cursor: 'pointer',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: 'inherit', opacity: isHovered || menuOpen ? 1 : 0,
-                transition: 'opacity 0.2s ease', padding: 0,
-              }}
-            >
-              <MoreHorizontal size={14} />
-            </button>
-            {menuOpen && (
-              <div
-                onClick={e => e.stopPropagation()}
-                style={{
-                  position: 'absolute', top: '24px', right: 0,
-                  background: 'var(--bg-panel)', border: '1px solid var(--border-light)',
-                  borderRadius: '12px', boxShadow: '0 12px 36px rgba(0,0,0,0.14)',
-                  padding: '6px', zIndex: 1000, minWidth: '170px',
-                  animation: 'popIn 0.2s cubic-bezier(0.16,1,0.3,1)',
-                }}
-              >
-                <div className="context-menu-item" onClick={() => { onEdit(); setMenuOpen(false); }}>
-                  <Edit2 size={14} /> Edit Task
-                </div>
-                {event.status !== 'in-progress' && (
-                  <div className="context-menu-item" style={{ color: '#2563eb' }} onClick={() => { onStatusChange('in-progress'); setMenuOpen(false); }}>
-                    <Clock size={14} /> Mark In Progress
-                  </div>
-                )}
-                {event.status !== 'done' && (
-                  <div className="context-menu-item" style={{ color: '#16a34a' }} onClick={() => { onStatusChange('done'); setMenuOpen(false); }}>
-                    <CheckCircle size={14} /> Mark Done
-                  </div>
-                )}
-                {(event.status === 'done' || event.status === 'in-progress') && (
-                  <div className="context-menu-item" style={{ color: '#d97706' }} onClick={() => { onStatusChange('todo'); setMenuOpen(false); }}>
-                    <RotateCcw size={14} /> Revert to To Do
-                  </div>
-                )}
-                <div style={{ height: '1px', background: 'var(--border-light)', margin: '4px 0' }} />
-                <div className="context-menu-item delete" onClick={() => { onDelete(); setMenuOpen(false); }}>
-                  <Trash2 size={14} /> Delete Task
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-      {/* Time */}
-      <div style={{ fontSize: '9px', fontWeight: '700', marginTop: '2px', opacity: 0.9 }}>
-        {fmt(event.start)} – {fmt(event.start + event.duration)}
+
+        {/* Time - Reduced Size */}
+        <div style={{ fontSize: '8px', fontWeight: '700', opacity: 0.85, marginTop: '2px' }}>
+          {fmt(event.start)} – {fmt(event.start + event.duration)}
+        </div>
       </div>
 
-      {/* Bottom Info Row (Left: Creator, Right: Status & Days) */}
+      {/* Bottom Part: Author & Status badge */}
       <div style={{
-        position: 'absolute',
-        bottom: '6px',
-        left: '8px',
-        right: '8px',
         display: 'flex',
         justifyContent: 'space-between',
-        alignItems: 'flex-end',
-        gap: '4px',
-        zIndex: 2,
-        pointerEvents: 'none'
+        alignItems: 'center',
+        marginTop: '4px',
+        gap: '4px'
       }}>
         {event.updatedBy ? (
           <div style={{ 
-            fontSize: '9px', 
+            fontSize: '8.5px', 
             fontWeight: '800', 
             opacity: 0.9, 
             whiteSpace: 'nowrap',
             textOverflow: 'ellipsis',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            maxWidth: '55%'
           }}>
             By <strong>{event.updatedBy}</strong>
           </div>
         ) : <div />}
 
-        <div style={{ 
-          display: 'flex', 
-          flexDirection: 'column', 
-          alignItems: 'flex-end', 
-          gap: '2px' 
-        }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
           {event.spanDays > 1 && (
-            <div style={{ fontSize: '9px', fontWeight: '800', opacity: 0.8, textTransform: 'none' }}>
-              Multiple days: {event.spanDays} days
+            <div style={{ fontSize: '8.5px', fontWeight: '800', opacity: 0.8, whiteSpace: 'nowrap' }}>
+              {event.spanDays}d
             </div>
           )}
 
@@ -218,13 +203,12 @@ const EventCard = ({ event, topPos, height, leftPos, width, onEdit, onDelete, on
               <div style={{
                 backgroundColor: bgColor,
                 color: '#ffffff',
-                fontSize: '9px',
+                fontSize: '8.5px',
                 fontWeight: '800',
-                padding: '1px 6px',
+                padding: '1px 5px',
                 borderRadius: '4px',
                 whiteSpace: 'nowrap',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                marginTop: '2px'
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
               }}>
                 {text}
               </div>
@@ -518,7 +502,7 @@ const TaskBoard = () => {
                               }}
                             >
                               <span style={{ opacity: 0.6 }}>{globalIdx}.</span>
-                              <span style={{ flex: 1 }}>{task.title}</span>
+                              <span style={{ flex: 1, whiteSpace: 'normal', wordBreak: 'break-word' }}>{task.title}</span>
                             </div>
                           );
                         })}
