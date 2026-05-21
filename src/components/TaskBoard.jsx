@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Users, MoreHorizontal, Edit2, Trash2, ChevronLeft, Tag } from 'lucide-react';
+import { Plus, Users, MoreHorizontal, Edit2, Trash2, ChevronLeft, Tag, CheckCircle, Clock, RotateCcw } from 'lucide-react';
 import { format, startOfWeek, addDays, isSameDay, differenceInCalendarDays } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 import { DayPicker } from 'react-day-picker';
@@ -35,7 +35,7 @@ const toCalSlot = (item, weekStart) => {
 };
 
 /* ── Event Card with hover ... dropdown ── */
-const EventCard = ({ event, topPos, height, leftPos, width, onEdit, onDelete, onOpen, canEdit, isFocused, anyFocused }) => {
+const EventCard = ({ event, topPos, height, leftPos, width, onEdit, onDelete, onOpen, onStatusChange, canEdit, isFocused, anyFocused }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -55,7 +55,7 @@ const EventCard = ({ event, topPos, height, leftPos, width, onEdit, onDelete, on
         top: `${topPos}%`, left: leftPos, width: width,
         height: `calc(${height}% - 2px)`,
         minHeight: '76px',
-        zIndex: isFocused ? 25 : 15,
+        zIndex: menuOpen ? 200 : (isFocused ? 25 : 15),
         background: event.color, 
         color: event.text, 
         borderColor: event.text,
@@ -122,13 +122,29 @@ const EventCard = ({ event, topPos, height, leftPos, width, onEdit, onDelete, on
                   position: 'absolute', top: '24px', right: 0,
                   background: 'var(--bg-panel)', border: '1px solid var(--border-light)',
                   borderRadius: '12px', boxShadow: '0 12px 36px rgba(0,0,0,0.14)',
-                  padding: '6px', zIndex: 1000, minWidth: '160px',
+                  padding: '6px', zIndex: 1000, minWidth: '170px',
                   animation: 'popIn 0.2s cubic-bezier(0.16,1,0.3,1)',
                 }}
               >
                 <div className="context-menu-item" onClick={() => { onEdit(); setMenuOpen(false); }}>
                   <Edit2 size={14} /> Edit Task
                 </div>
+                {event.status !== 'in-progress' && (
+                  <div className="context-menu-item" style={{ color: '#2563eb' }} onClick={() => { onStatusChange('in-progress'); setMenuOpen(false); }}>
+                    <Clock size={14} /> Mark In Progress
+                  </div>
+                )}
+                {event.status !== 'done' && (
+                  <div className="context-menu-item" style={{ color: '#16a34a' }} onClick={() => { onStatusChange('done'); setMenuOpen(false); }}>
+                    <CheckCircle size={14} /> Mark Done
+                  </div>
+                )}
+                {(event.status === 'done' || event.status === 'in-progress') && (
+                  <div className="context-menu-item" style={{ color: '#d97706' }} onClick={() => { onStatusChange('todo'); setMenuOpen(false); }}>
+                    <RotateCcw size={14} /> Revert to To Do
+                  </div>
+                )}
+                <div style={{ height: '1px', background: 'var(--border-light)', margin: '4px 0' }} />
                 <div className="context-menu-item delete" onClick={() => { onDelete(); setMenuOpen(false); }}>
                   <Trash2 size={14} /> Delete Task
                 </div>
@@ -432,6 +448,7 @@ const TaskBoard = () => {
                     onEdit={() => editTitle(slot)}
                     onDelete={() => deleteEvent(slot.id)}
                     onOpen={() => openEditModal(slot)}
+                    onStatusChange={(newStatus) => updateEvent({ ...slot, status: newStatus })}
                     canEdit={canEdit}
                     isFocused={focusedTaskId === slot.id}
                     anyFocused={focusedTaskId !== null}
@@ -476,7 +493,7 @@ const TaskBoard = () => {
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <span style={{ fontSize: '16px' }}>📍</span>
-                        <span style={{ fontSize: '13px', fontWeight: '800', color: dept.text }}>{dept.name}</span>
+                        <span style={{ fontSize: '13px', fontWeight: '800', color: 'var(--text-primary)' }}>{dept.name}</span>
                       </div>
                       <span style={{ fontSize: '11px', fontWeight: '800', padding: '2px 8px', borderRadius: '8px', background: `${dept.accent}18`, color: dept.accent }}>
                         {deptTasks.length}

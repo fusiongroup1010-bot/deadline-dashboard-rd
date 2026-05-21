@@ -55,14 +55,23 @@ function AppContent() {
         <TopNav onMenuClick={() => setIsSidebarOpen(true)} />
         <div className="content-area">
           <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/calendar" element={<CalendarView />} />
-            <Route path="/tasks" element={<TaskBoard />} />
-            <Route path="/notify" element={<NotifyBoard />} />
-            <Route path="/reports" element={<CalendarView />} />
-            <Route path="/login" element={<Navigate to="/" replace />} />
-            {/* Fallback */}
-            <Route path="*" element={<Navigate to="/" replace />} />
+            {currentUser?.isSpecialAccount ? (
+              <>
+                <Route path="/notify" element={<NotifyBoard />} />
+                <Route path="*" element={<Navigate to="/notify" replace />} />
+              </>
+            ) : (
+              <>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/calendar" element={<CalendarView />} />
+                <Route path="/tasks" element={<TaskBoard />} />
+                <Route path="/notify" element={<NotifyBoard />} />
+                <Route path="/reports" element={<CalendarView />} />
+                <Route path="/login" element={<Navigate to="/" replace />} />
+                {/* Fallback */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </>
+            )}
           </Routes>
         </div>
       </div>

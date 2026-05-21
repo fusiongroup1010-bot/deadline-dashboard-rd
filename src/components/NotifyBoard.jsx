@@ -227,15 +227,15 @@ const NotifyBoard = () => {
                                  <Pin size={14} fill={n.pinned ? 'currentColor' : 'none'} /> {n.pinned ? 'Pinned' : 'Pin'}
                                </button>
                              )}
-                             {(n.senderId === currentUser.id || currentUser.id === 'CEOFS') && (
-                               <button 
-                                 className="btn-ghost-mini" 
-                                 onClick={(e) => { e.stopPropagation(); deleteNotification(n.id); }}
-                                 style={{ color: '#ef4444' }}
-                               >
-                                 <Trash size={14} /> Delete
-                               </button>
-                             )}
+                              {(n.senderId === currentUser.id || currentUser.id === 'CEOFS' || currentUser.isSpecialAccount) && (
+                                <button 
+                                  className="btn-ghost-mini" 
+                                  onClick={(e) => { e.stopPropagation(); deleteNotification(n.id); }}
+                                  style={{ color: '#ef4444' }}
+                                >
+                                  <Trash size={14} /> Delete
+                                </button>
+                              )}
 
                              {/* Read Receipts - aligned right */}
                              <div style={{ marginLeft: 'auto', position: 'relative' }}>
@@ -243,7 +243,7 @@ const NotifyBoard = () => {
                                  const { readUsers, unreadUsers } = getReadReceipts(n);
                                  const total = readUsers.length + unreadUsers.length;
                                  const readCount = readUsers.length;
-                                 const isSenderOrAdmin = n.senderId === currentUser.id || currentUser.id === 'CEOFS';
+                                 const isSenderOrAdmin = n.senderId === currentUser.id || currentUser.id === 'CEOFS' || currentUser.isSpecialAccount;
                                  const isExpanded = expandedReceiptId === n.id;
                                  const allRead = readCount === total && total > 0;
 

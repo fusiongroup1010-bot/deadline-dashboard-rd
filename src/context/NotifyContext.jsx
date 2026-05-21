@@ -36,7 +36,7 @@ export const NotifyProvider = ({ children }) => {
       const myNotifs = allNotifs.filter(n => {
         // Always show to sender and admins
         if (n.senderId === currentUser.id) return true;
-        const isAdmin = ['ceofs', 'lelienfs', 'thanhtrafs', 'tranhfs', 'nganhfs', 'tnhanfs', 'nanhfs', 'tnganfs', 'phlinhfs'].includes(currentUser.id.toLowerCase());
+        const isAdmin = ['ceofs', 'lelienfs', 'thanhtrafs', 'tranhfs', 'nganhfs', 'tnhanfs', 'nanhfs', 'tnganfs', 'phlinhfs'].includes(currentUser.id.toLowerCase()) || currentUser.isSpecialAccount;
         if (isAdmin) return true;
 
         if (n.recipients.includes('all')) {
