@@ -47,6 +47,7 @@ const TaskModal = () => {
   };
 
   const [form, setForm] = useState(defaultForm);
+  const [isDeptDropdownOpen, setIsDeptDropdownOpen] = useState(false);
 
   React.useEffect(() => {
     if (currentEvent) {
@@ -175,29 +176,44 @@ const TaskModal = () => {
 
           {/* Send to Departments (Only for Month Report/Meeting - Meeting / Report) */}
           {isMonthCalendar && ['meeting', 'report'].includes(form.type) && (
-            <div className="form-group" style={{ marginTop: '16px', marginBottom: '16px' }}>
-              <label style={labelStyle}>Send Invite / Report to Departments</label>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                {currentCategories.map(c => {
-                  const isChecked = form.sendToDepartments.includes(c.id);
-                  return (
-                    <label key={c.id} style={{ 
-                      display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', 
-                      padding: '6px 12px', borderRadius: '20px', 
-                      background: isChecked ? `${c.accent}22` : 'var(--bg-main)', 
-                      border: `1px solid ${isChecked ? c.accent : 'var(--border-light)'}`, 
-                      cursor: 'pointer', color: isChecked ? c.accent : 'var(--text-secondary)',
-                      fontWeight: isChecked ? '700' : '600'
-                    }}>
-                      <input type="checkbox" checked={isChecked} onChange={(e) => {
-                        if (e.target.checked) set('sendToDepartments', [...form.sendToDepartments, c.id]);
-                        else set('sendToDepartments', form.sendToDepartments.filter(id => id !== c.id));
-                      }} style={{ display: 'none' }} />
-                      {c.name}
-                    </label>
-                  );
-                })}
+            <div className="form-group" style={{ marginTop: '16px', marginBottom: '16px', position: 'relative' }}>
+              <label style={labelStyle}>WITH DEPARTMENTS</label>
+              <div 
+                style={{ ...selectStyle, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                onClick={() => setIsDeptDropdownOpen(!isDeptDropdownOpen)}
+              >
+                <span style={{ color: form.sendToDepartments.length ? 'var(--text-primary)' : 'var(--text-secondary)', fontWeight: 'normal' }}>
+                  {form.sendToDepartments.length ? `${form.sendToDepartments.length} departments selected` : 'Select departments...'}
+                </span>
+                <span style={{ fontSize: '10px' }}>{isDeptDropdownOpen ? '▲' : '▼'}</span>
               </div>
+              {isDeptDropdownOpen && (
+                <div style={{
+                  position: 'absolute', top: '100%', left: 0, right: 0, 
+                  background: 'white', border: '1px solid var(--border-light)', 
+                  borderRadius: '8px', marginTop: '4px', zIndex: 10,
+                  maxHeight: '180px', overflowY: 'auto', boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                }}>
+                  {currentCategories.map(c => {
+                    const isChecked = form.sendToDepartments.includes(c.id);
+                    return (
+                      <label key={c.id} style={{
+                        display: 'flex', alignItems: 'center', gap: '8px',
+                        padding: '10px 12px', cursor: 'pointer',
+                        borderBottom: '1px solid var(--border-light)',
+                        fontSize: '14px', color: 'var(--text-primary)',
+                        margin: 0
+                      }}>
+                        <input type="checkbox" checked={isChecked} onChange={(e) => {
+                          if (e.target.checked) set('sendToDepartments', [...form.sendToDepartments, c.id]);
+                          else set('sendToDepartments', form.sendToDepartments.filter(id => id !== c.id));
+                        }} style={{ width: '16px', height: '16px', cursor: 'pointer' }} />
+                        {c.name}
+                      </label>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           )}
 
@@ -222,19 +238,12 @@ const TaskModal = () => {
           </div>
 
           {/* Dates */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-            <div className="form-group">
-              <label style={labelStyle}><Calendar size={11} style={{ display: 'inline', marginRight: 4 }} />Start Date</label>
-              <input type="date" value={form.dueDate} onChange={e => {
-                const newStart = e.target.value;
-                if (form.endDate < newStart) setForm(f => ({ ...f, dueDate: newStart, endDate: newStart }));
-                else set('dueDate', newStart);
-              }} style={inputStyle} />
-            </div>
-            <div className="form-group">
-              <label style={labelStyle}><Calendar size={11} style={{ display: 'inline', marginRight: 4 }} />End Date</label>
-              <input type="date" value={form.endDate} min={form.dueDate} onChange={e => set('endDate', e.target.value)} style={inputStyle} />
-            </div>
+          <div className="form-group" style={{ marginBottom: '16px' }}>
+            <label style={labelStyle}><Calendar size={11} style={{ display: 'inline', marginRight: 4 }} />DEADLINE</label>
+            <input type="date" value={form.endDate} onChange={e => {
+              const val = e.target.value;
+              setForm(f => ({ ...f, dueDate: val, endDate: val }));
+            }} style={inputStyle} />
           </div>
 
           {/* Time & Duration */}

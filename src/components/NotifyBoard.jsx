@@ -15,7 +15,7 @@ const NotifyBoard = () => {
   // Compose State
   const [showCompose, setShowCompose] = useState(false);
   const [newContent, setNewContent] = useState('');
-  const [recipientScope, setRecipientScope] = useState('rnd');
+  const [recipientScope, setRecipientScope] = useState('all');
   const [isUrgent, setIsUrgent] = useState(false);
   const [sending, setSending] = useState(false);
 
@@ -105,6 +105,7 @@ const NotifyBoard = () => {
                   onChange={e => setRecipientScope(e.target.value)}
                   style={{ width: '100%', padding: '12px', borderRadius: '12px', border: '1px solid var(--border-light)', outline: 'none', background: 'white', fontWeight: '700', color: 'var(--text-primary)' }}
                 >
+                  <option value="all">All Departments</option>
                   <option value="rnd">RNDSP</option>
                   <option value="design">HY Design</option>
                   <option value="mms">MMKP</option>
