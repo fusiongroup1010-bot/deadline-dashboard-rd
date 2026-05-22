@@ -12,6 +12,7 @@ const NotifyWindow = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [toastNotif, setToastNotif] = useState(null);
   const [lastLatestNotifId, setLastLatestNotifId] = useState(null);
+  const [hasOldUnread, setHasOldUnread] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -41,6 +42,24 @@ const NotifyWindow = () => {
       }
     }
   }, [notifications, currentUser, lastLatestNotifId]);
+
+  useEffect(() => {
+    if (!currentUser || notifications.length === 0) {
+      setHasOldUnread(false);
+      return;
+    }
+    
+    const now = new Date();
+    const oldUnread = notifications.some(n => {
+      const isUnread = !n.readBy?.includes(currentUser.id);
+      if (!isUnread) return false;
+      const dt = n.createdAt?.toDate ? n.createdAt.toDate() : new Date();
+      const diffTime = Math.abs(now - dt);
+      const diffDays = diffTime / (1000 * 60 * 60 * 24);
+      return diffDays > 2;
+    });
+    setHasOldUnread(oldUnread);
+  }, [notifications, currentUser]);
 
   if (!currentUser) return null;
   
@@ -279,7 +298,7 @@ const NotifyWindow = () => {
 
       {/* Floating Toggle Button */}
       <button 
-        className={`notify-toggle ${unreadCount > 0 ? 'has-unread' : ''}`}
+        className={`notify-toggle ${unreadCount > 0 ? 'has-unread' : ''} ${hasOldUnread ? 'shake-alert' : ''}`}
         onClick={() => setIsOpen(!isOpen)}
         title="Toggle Notify Panel"
       >
